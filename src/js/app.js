@@ -17,7 +17,7 @@ document.addEventListener('turbo:load', () => {
     if (greetingEl) {
         greetingEl.innerHTML = greeting;
     }
-
+    
     const userNameInput = document.getElementById("name");
     const userAgeInput = document.getElementById("age");
     const saveUserNameBtn = document.getElementById("saveUserName");
@@ -43,16 +43,22 @@ document.addEventListener('turbo:load', () => {
         userAgeInput.value = localStorage.getItem("le-userage"); 
     }
 
-    
-    const lifeExpectancy = 70 - localStorage.getItem("le-userage");
-    const convertToDays = (lifeExpectancy * 365).toLocaleString(undefined, {maximumFractionDigits: 2}) + ' days left';
+    function updateLifeExpectancy() {
+        const currentAge = parseInt(localStorage.getItem("le-userage"));
+        const remainingLifeExpectancy = 70 - currentAge;
+        const remainingDays = remainingLifeExpectancy * 365;
 
-    if (localStorage.getItem("le-userage") > 70) {
-        document.getElementById("life-expectancy").innerText = 'You meet you life expectancy and yet your still alive be thankful everyday.';
-    } else {
-        document.getElementById("life-expectancy").innerText = convertToDays ?? '16,425 days left';
+        if (remainingDays > 0) {
+            document.getElementById("life-expectancy").innerText = `${remainingDays.toLocaleString(undefined, { maximumFractionDigits: 0 })} days left`;
+        } else {
+            document.getElementById("life-expectancy").innerText = 'You meet your life expectancy, and yet you are still alive. Be thankful every day.';
+        }
     }
 
-    document.getElementById("le-username").innerText = localStorage.getItem("le-username") ?? 'Mark Paul'; 
-    document.getElementById("le-userage").innerText = localStorage.getItem("le-userage") + ' years old' ?? '25 years old'; 
+    setInterval(updateLifeExpectancy, 86400000); // Update life expectancy every day (86400000 ms = 1 day)
+
+    document.getElementById("le-username").innerText = localStorage.getItem("le-username") || 'Name not set'; 
+    document.getElementById("le-userage").innerText = localStorage.getItem("le-userage") || 'Age not set'; 
+    updateLifeExpectancy();
+    
 });
