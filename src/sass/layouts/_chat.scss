@@ -1,0 +1,100 @@
+// Chat Variables
+$border-color: 1px solid rgba(var(--color-dark-rgb), 0.1);
+
+// Extenders
+%convoWrapperStyles {
+    display: grid;
+    grid-gap: 0.2rem;
+}
+
+%convoStyles {
+    padding: 7px 14px;
+    border-radius: 16px;
+    width: fit-content;
+    white-space: break-spaces;
+    margin-bottom: 0;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: .05fr 2fr; 
+    grid-template-areas: "content content";
+    height: 100vh;
+    max-width: 1920px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    background: var(--color-light);
+
+    @include breakpoint("sm") {
+        grid-template-areas: "content content";
+    }
+}
+
+.aside {
+    grid-area: aside;
+    background: var(--color-card);
+    padding: 12px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    place-content: flex-start;
+    border-right: $border-color;
+    z-index: 1;
+    width: 65px;
+
+    @include breakpoint("sm") {
+        display: none;
+    }
+}
+
+.content {
+    grid-area: content;
+    overflow-y: scroll;
+    border-left: $border-color;
+    border-right: $border-color;
+    height: 100vh;
+    padding: 4rem 0;
+
+    .top-wrapper {
+        border-bottom: $border-color;
+        height: 55px;
+        background-color: var(--color-card);
+        @include backdrop-blur(card);
+    }
+
+    .bottom-wrapper {
+        border-top: $border-color;
+        background-color: var(--color-card);
+        @include backdrop-blur(card);
+    }
+
+    .conversation-wrapper {
+        overflow: auto;
+
+        .bot {
+            @extend %convoWrapperStyles;
+            place-items: start;
+            width: 100%;
+
+            p {
+                background: rgba(var(--color-medium-rgb), 0.3);
+                max-width: 75%;
+                @extend %convoStyles;
+            }
+        }
+        
+        .user {
+            @extend %convoWrapperStyles;
+            place-items: end;
+            width: 100%;
+
+            p {
+                background: var(--color-primary);
+                color: var(--color-primary-contrast);
+                max-width: 75%;
+                @extend %convoStyles;
+            }
+        }
+    }
+}
